@@ -32,7 +32,7 @@ class UserCreate(BaseModel):
 
 class UserOut(BaseModel):
     id: int
-    email: str
+    email: EmailStr
     created_at: datetime
 
     class Config:
@@ -40,7 +40,7 @@ class UserOut(BaseModel):
 
 
 class UserLogin(BaseModel):
-    email: str
+    email: EmailStr
     password: str
 
 
@@ -50,4 +50,4 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    id: Optional[str] = None
+    id: Optional[int] = None

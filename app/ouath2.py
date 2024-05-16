@@ -24,12 +24,17 @@ def create_access_token(data: dict):
 def verify_access_token(token: str, credentials_exception):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        id = payload.get("user_id")
+        id: str = payload.get("user_id")
+
         if id is None:
             raise credentials_exception
+        
         token_data = schemas.TokenData(id=id)
+    
     except JWTError:
         raise credentials_exception
+
+    return token_data
 
 
 def get_current_user(token: str = Depends(ouath2_scheme)):
@@ -38,5 +43,9 @@ def get_current_user(token: str = Depends(ouath2_scheme)):
         detail=f"Could not verify credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+
+    # token = 
+
+    # user = db.query(models.User).filter(models.User.id == token.id).first()
 
     return verify_access_token(token, credentials_exception)

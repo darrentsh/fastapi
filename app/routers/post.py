@@ -79,6 +79,6 @@ def update_post(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"post with id {id} does not exist",
         )
-    post_query.update(**udpated_post.model_dump(), synchronize_session=False)
+    post_query.update(udpated_post.model_dump(), synchronize_session=False)
     db.commit()
     return post_query.first()
