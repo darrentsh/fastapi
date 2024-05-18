@@ -12,7 +12,7 @@ router = APIRouter(prefix="/posts", tags=["Posts"])
 
 @router.get("/", response_model=List[schemas.Post])
 def get_posts(
-    db: Session = Depends(get_db), user_id: int = Depends(ouath2.get_current_user)
+    db: Session = Depends(get_db), current_user: dict = Depends(ouath2.get_current_user)
 ):
     posts = db.query(models.Post).all()
     return posts
@@ -22,7 +22,7 @@ def get_posts(
 def create_posts(
     post: schemas.PostCreate,
     db: Session = Depends(get_db),
-    user_id: int = Depends(ouath2.get_current_user),
+    current_user: dict= Depends(ouath2.get_current_user),
 ):
     new_post = models.Post(**post.model_dump())
     db.add(new_post)
@@ -35,7 +35,7 @@ def create_posts(
 def get_post(
     id: int,
     db: Session = Depends(get_db),
-    user_id: int = Depends(ouath2.get_current_user),
+    current_user: dict= Depends(ouath2.get_current_user),
 ):
     post = db.query(models.Post).filter(models.Post.id == id).first()
     if post == None:
@@ -50,7 +50,7 @@ def get_post(
 def delete_post(
     id: int,
     db: Session = Depends(get_db),
-    user_id: int = Depends(ouath2.get_current_user),
+    current_user: dict= Depends(ouath2.get_current_user),
 ):
     post = db.query(models.Post).filter(models.Post.id == id)
 
@@ -69,7 +69,7 @@ def update_post(
     id: int,
     udpated_post: schemas.PostUpdate,
     db: Session = Depends(get_db),
-    user_id: int = Depends(ouath2.get_current_user),
+    current_user: dict= Depends(ouath2.get_current_user),
 ):
     post_query = db.query(models.Post).filter(models.Post.id == id)
     post = post_query.first()
